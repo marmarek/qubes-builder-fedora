@@ -14,7 +14,7 @@ fi
 YUM=yum
 
 if [ "${DISTRO#fc}" -ge 22 ]; then
-    YUM=dnf
+    YUM=yum-deprecated
 fi
 
 set -e

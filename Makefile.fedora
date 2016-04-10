@@ -40,8 +40,8 @@ ifdef REPO_PROXY
 endif
 
 ifeq ($(shell expr $(subst fc,,$(DIST)) \>= 22),1)
-	YUM := dnf
-	YUM_BUILDDEP := dnf builddep
+	YUM := yum-deprecated
+	YUM_BUILDDEP := yum-builddep
 else
 	YUM := yum
 	YUM_BUILDDEP := yum-builddep

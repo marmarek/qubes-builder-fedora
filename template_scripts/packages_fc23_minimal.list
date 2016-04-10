@@ -6,5 +6,5 @@ yum
 --exclude=kdegames
 --exclude=firstboot
 --exclude=xorg-x11-drv-nouveau
---exclude=firewall-config,firewalld
+--exclude=firewall-config,firewalld*
 --exclude=gnome-boxes

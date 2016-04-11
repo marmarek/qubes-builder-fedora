@@ -11,9 +11,17 @@ if [ -n "${REPO_PROXY}" ]; then
 fi
 
 if [ "${DIST/fc/}" -ge 21 ]; then
-    YUM=dnf
+    # yum must be used as only yum supports the use of the
+    # environment variables named YUM0, YUM1, ..., YUM9.
+    YUM=yum-deprecated
 else
     YUM=yum
+fi
+
+if which yum-deprecated >/dev/null 2>&1 ; then
+    LOCAL_YUM=yum-deprecated
+else
+    LOCAL_YUM=yum
 fi
 
 # ==============================================================================
@@ -53,7 +61,7 @@ function yumInstall() {
         chroot $YUM install ${YUM_OPTS} -y ${files[@]} || exit 1
         rm -f ${INSTALLDIR}/etc/yum.repos.d/template-builder-repo.repo
     else
-        yum install -c ${SCRIPTSDIR}/../template-yum.conf ${YUM_OPTS} -y --installroot=${INSTALLDIR} ${files[@]} || exit 1
+        ${LOCAL_YUM} install -c ${SCRIPTSDIR}/../template-yum.conf ${YUM_OPTS} -y --installroot=${INSTALLDIR} ${files[@]} || exit 1
     fi
     umount ${INSTALLDIR}/etc/resolv.conf
     umount ${INSTALLDIR}/tmp/template-builder-repo
@@ -83,7 +91,7 @@ function yumGroupInstall() {
         chroot $YUM group install $optional ${YUM_OPTS} -y ${files[@]} || exit 1
         rm -f ${INSTALLDIR}/etc/yum.repos.d/template-builder-repo.repo
     else
-        yum install -c ${SCRIPTSDIR}/../template-yum.conf ${YUM_OPTS} -y --installroot=${INSTALLDIR} ${files[@]} || exit 1
+        ${LOCAL_YUM} install -c ${SCRIPTSDIR}/../template-yum.conf ${YUM_OPTS} -y --installroot=${INSTALLDIR} ${files[@]} || exit 1
     fi
     umount ${INSTALLDIR}/etc/resolv.conf
     umount ${INSTALLDIR}/tmp/template-builder-repo

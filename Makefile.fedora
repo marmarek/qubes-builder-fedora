@@ -40,8 +40,8 @@ ifdef REPO_PROXY
 endif
 
 ifeq ($(shell expr $(subst fc,,$(DIST)) \>= 22),1)
-	YUM := dnf
-	YUM_BUILDDEP := dnf builddep
+	YUM := yum-deprecated
+	YUM_BUILDDEP := yum-builddep
 else
 	YUM := yum
 	YUM_BUILDDEP := yum-builddep
@@ -91,7 +91,7 @@ endif
 	$(FEDORA_PLUGIN_DIR)/update-local-repo.sh $(DIST)
 	sudo $(CHROOT_ENV) chroot $(CHROOT_DIR) $(YUM) --disablerepo=* --enablerepo=qubes-builder-pkgs $(YUM_OPTS) clean all
 	sudo $(CHROOT_ENV) chroot $(CHROOT_DIR) sh -c 'cd $(DIST_SRC); $(YUM) $(YUM_OPTS) makecache'
-	sudo $(CHROOT_ENV) chroot $(CHROOT_DIR) sh -c 'cd $(DIST_SRC); $(YUM) $(YUM_OPTS) -y update'
+	sudo $(CHROOT_ENV) chroot $(CHROOT_DIR) sh -c 'cd $(DIST_SRC); $(YUM) $(YUM_OPTS) -y update --skip-broken'
 	sudo $(CHROOT_ENV) chroot $(CHROOT_DIR) sh -c 'cd $(DIST_SRC); $(YUM_BUILDDEP) $(YUM_OPTS) -y $(PACKAGE)'
 
 ifdef INCREMENT_DEVEL_VERSIONS

@@ -11,7 +11,6 @@ Provides:   /usr/bin/mimeopen
 Provides:   nautilus-actions
 Provides:   gnome-packagekit-updater
 Provides:   ImageMagick
-Provides:   pycairo
 Provides:   notification-daemon
 Provides:   desktop-notification-daemon
 Provides:   tinyproxy
